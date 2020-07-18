@@ -1,3 +1,5 @@
 kernel
 *.o
 .vscode
+*.iso
+kernel-*

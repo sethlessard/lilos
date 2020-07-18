@@ -3,7 +3,7 @@
 
 /**
  * Initialize the IDT.
- */ 
+ */
 void Idt_init(void);
 
 #endif

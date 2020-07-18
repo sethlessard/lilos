@@ -4,7 +4,8 @@
 #include "idt/idt.h"
 #include "stdlib/kprint.h"
 
-void kernelMain(void) {
+void kernelMain(void)
+{
 	// initialize the IDT
 	Idt_init();
 
@@ -19,5 +20,6 @@ void kernelMain(void) {
 	kprint_newLine();
 	kprint_newLine();
 
-	while(1);
+	while (1)
+		;
 }

@@ -5,7 +5,7 @@
 
 /**
  * Main
- */ 
+ */
 void kernelMain(void);
 
 #endif
