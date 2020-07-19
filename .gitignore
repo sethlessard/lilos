@@ -3,3 +3,4 @@ kernel
 .vscode
 *.iso
 kernel-*
+iso/*
