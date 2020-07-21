@@ -6,8 +6,8 @@
 #define KEYBOARD_STATUS_PORT 0x64
 #define ENTER_KEY_CODE 0x1C
 
-extern char read_port(unsigned short port);
-extern void write_port(unsigned short port, unsigned char data);
+extern char inb(unsigned short port);
+extern void outb(unsigned short port, unsigned char data);
 
 /**
  * Handle a keypress.
@@ -18,13 +18,13 @@ void Keyboard_handleKeypress(void)
     char keycode;
 
     /* write EOI */
-    write_port(0x20, 0x20);
+    outb(0x20, 0x20);
 
-    status = read_port(KEYBOARD_STATUS_PORT);
+    status = inb(KEYBOARD_STATUS_PORT);
     /* Lowest bit of status will be set if buffer is not empty */
     if (status & 0x01)
     {
-        keycode = read_port(KEYBOARD_DATA_PORT);
+        keycode = inb(KEYBOARD_DATA_PORT);
         if (keycode < 0)
             return;
 
@@ -47,5 +47,5 @@ void Keyboard_handleKeypress(void)
  */
 void Keyboard_init(void)
 {
-    write_port(0x21, 0xFD);
+    outb(0x21, 0xFD);
 }

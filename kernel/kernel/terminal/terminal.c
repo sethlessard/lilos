@@ -11,10 +11,10 @@
 #define SCREEN_SIZE BYTES_PER_CHAR *COLUMNS_IN_LINE *LINES
 #define LINE_SIZE BYTES_PER_CHAR * COLUMNS_IN_LINE
 
-extern void read_port(unsigned short port);
-extern void write_port(unsigned short port, unsigned char data);
-void enableCursor(void);
-void disableCursor(void);
+#define BAM "lilos > "
+#define BAM_LENGTH kstrlen(BAM)
+
+void _writeBam(void);
 
 unsigned int cursorLocation = 0;
 char *videoMemory = (char *)0xb8000;
@@ -37,8 +37,9 @@ void Terminal_clear(void)
  */
 void Terminal_init(void)
 {
+	Terminal_resetCursor();
     Terminal_clear();
-    Terminal_resetCursor();
+	_writeBam();
 }
 
 static bool print(const char* data, size_t length) {
@@ -131,8 +132,8 @@ int Terminal_putChar(const char c)
 		// backspace
 		case '\b':
 			if (cursorLocation > 0) {
-				videoMemory[--cursorLocation] = 0x00;
-				videoMemory[--cursorLocation] = 0x00;
+				videoMemory[--cursorLocation] = 0x07;
+				videoMemory[--cursorLocation] = ' ';
 			}
 			break;
 		// newline
@@ -163,4 +164,8 @@ void Terminal_putStr(const char* str) {
 void Terminal_resetCursor(void)
 {
     cursorLocation = 0;
+}
+
+void _writeBam(void) {
+	Terminal_printf(BAM);
 }

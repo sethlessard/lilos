@@ -5,9 +5,8 @@
 #define IDT_SIZE 256
 #define INTERRUPT_GATE 0x8e
 
-extern void BOOT_keyboardHandler(void);
-extern void read_port(unsigned short port);
-extern void write_port(unsigned short port, unsigned char data);
+extern void ASM_keyboardHandler(void);
+extern void outb(unsigned short port, unsigned char data);
 extern void load_idt(unsigned long *idtPtr);
 
 struct IdtEntry
@@ -31,7 +30,7 @@ void Idt_init(void)
 	unsigned long idtPtr[2];
 
 	// populate the keyboard IdtEntry
-	keyboardAddress = (unsigned long)BOOT_keyboardHandler;
+	keyboardAddress = (unsigned long)ASM_keyboardHandler;
 	idt[0x21].offsetLowerBits = keyboardAddress & 0xffff;
 	idt[0x21].selector = KERNEL_CODE_SEGMENT_OFFSET;
 	idt[0x21].zero = 0;
@@ -45,29 +44,29 @@ void Idt_init(void)
 	*/
 
 	/* ICW1 - begin initialization */
-	write_port(0x20, 0x11);
-	write_port(0xA0, 0x11);
+	outb(0x20, 0x11);
+	outb(0xA0, 0x11);
 
 	/* ICW2 - remap offset address of IDT */
 	/*
 	* In x86 protected mode, we have to remap the PICs beyond 0x20 because
 	* Intel have designated the first 32 interrupts as "reserved" for cpu exceptions
 	*/
-	write_port(0x21, 0x20);
-	write_port(0xA1, 0x28);
+	outb(0x21, 0x20);
+	outb(0xA1, 0x28);
 
 	/* ICW3 - setup cascading */
-	write_port(0x21, 0x00);
-	write_port(0xA1, 0x00);
+	outb(0x21, 0x00);
+	outb(0xA1, 0x00);
 
 	/* ICW4 - environment info */
-	write_port(0x21, 0x01);
-	write_port(0xA1, 0x01);
+	outb(0x21, 0x01);
+	outb(0xA1, 0x01);
 	/* Initialization finished */
 
 	/* mask interrupts */
-	write_port(0x21, 0xff);
-	write_port(0xA1, 0xff);
+	outb(0x21, 0xff);
+	outb(0xA1, 0xff);
 
 	/* fill the IDT descriptor */
 	idtAddress = (unsigned long)idt;

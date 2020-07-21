@@ -11,11 +11,8 @@ void kernelMain(void)
 	// initialize the drivers
 	Keyboard_init();
 
-	// clear the terminal
-	Terminal_clear();
-
-	const char *str = "Uh >";
-	Terminal_printf(str);
+	// initialize the terminal
+	Terminal_init();
 
 	while (1);
 }

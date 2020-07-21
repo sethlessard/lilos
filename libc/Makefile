@@ -2,8 +2,8 @@
 CC = gcc
 VERSION = 1000
 SRCS = ${wildcard stdio/*.c} \
-		 ${wildcard stdlib/*.c} \
-		 ${wildcard string/*.c}
+	   ${wildcard stdlib/*.c} \
+	   ${wildcard string/*.c}
 OBJS= ${SRCS:.c=.o}
 WARN    = -W -Wall -Wstrict-prototypes -Wmissing-prototypes
 CFLAGS  = -ffreestanding -O2 -DMODULE -D__KERNEL__ -nostdinc ${WARN}

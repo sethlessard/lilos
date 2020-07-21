@@ -17,6 +17,9 @@ void Terminal_init(void);
 
 /**
  * Print a formatted string.
+ * @param format the format string
+ * @param ... the variable args
+ * @returns the number of bytes written.
  */ 
 int Terminal_printf(const char* restrict format, ...);
 
