@@ -37,8 +37,6 @@ void Terminal_clear(void)
  */
 void Terminal_init(void)
 {
-	Terminal_resetCursor();
-    Terminal_clear();
 	_writeBam();
 }
 
@@ -104,7 +102,10 @@ int Terminal_printf(const char* restrict format, ...) {
 			int i = va_arg(parameters, int);
 			char buf[16];
 			char* formatted = itoa(i, buf, 10);
-			return print(formatted, kstrlen(formatted));
+			size_t len = kstrlen(formatted);
+			if (!print(formatted, len))
+				return -1;
+			written += len;
 		} else {
 			format = format_begun_at;
 			size_t len = kstrlen(format);

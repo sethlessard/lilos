@@ -14,6 +14,8 @@ extern kernelMain
 start:
     cli                          ; block interrupts
     mov esp, stack               ; set stack pointer
+    push eax                     ; push the magic number to the stack to be read by kernelMain
+    push ebx                     ; push the address of the grub multiboot object to the stack to be read by kernelMain
     call kernelMain
     hlt                          ; halt the CPU
 

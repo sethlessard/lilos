@@ -18,12 +18,12 @@ TODO: add required dependencies
 make run
 ```
 
-### Build a bootable ISO
+## Run the ISO in Qemu
 
 ```sh
 ./build.sh
 
-make boot.iso
+make runiso
 ```
 
 ### Clean the project
