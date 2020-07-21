@@ -2,14 +2,18 @@
 CC = gcc
 VERSION = 1000
 PROG = kernel-${VERSION}
-SRCS = ${wildcard src/driver/keyboard/*.c} \
-	   ${wildcard src/driver/screen/*.c} \
-	   ${wildcard src/idt/*.c} \
-	   ${wildcard src/stdlib/*.c} \
-	   ${wildcard src/*.c }
-OBJS = ${SRCS:.c=.o}
-WARN    := -W -Wall -Wstrict-prototypes -Wmissing-prototypes
-CFLAGS  := -ffreestanding -O2 -DMODULE -D__KERNEL__ ${WARN}
+KSRCS = ${wildcard kernel/kernel/driver/keyboard/*.c} \
+	    ${wildcard kernel/kernel/idt/*.c} \
+		${wildcard kernel/kernel/libc/stdlib/*.c} \
+		${wildcard kernel/kernel/libc/string/*.c } \
+		${wildcard kernel/kernel/terminal/*.c} \
+	    ${wildcard kernel/kernel/*.c }
+KOBJS = ${KSRCS:.c=.o}
+LIBCOBJS = ${wildcard libc/stdio/*.o} \
+		   ${wildcard libc/stdlib/*.o} \
+		   ${wildcard libc/string/*.o}
+WARN    = -W -Wall -Wstrict-prototypes -Wmissing-prototypes
+CFLAGS  = -ffreestanding -O2 -DMODULE -D__KERNEL__ -nostdinc ${WARN}
 
 all: ${PROG}
 
@@ -17,10 +21,10 @@ boot.o:
 	nasm -f elf32 boot.asm -o boot.o
 	
 %.o: %.c
-	gcc -m32 ${CFLAGS} -c -o $@ $^
+	gcc -m32 -Ikernel/include ${CFLAGS} -c -o $@ $^
 
-${PROG}: boot.o ${OBJS}
-	ld -m elf_i386 -T link.ld -o ${PROG} boot.o ${OBJS}
+${PROG}: boot.o ${KOBJS} ${LIBCOBJS}
+	ld -m elf_i386 -T link.ld -o ${PROG} boot.o ${KOBJS} ${LIBCOBJS}
 
 boot.iso: ${PROG}
 	mkdir -p iso/boot/grub
@@ -38,6 +42,6 @@ runiso: boot.iso
 
 .PHONY: clean
 clean:
-	rm -f ${OBJS}
+	rm -f ${KOBJS}
 	rm -f *.o
 	rm -f ${PROG}
