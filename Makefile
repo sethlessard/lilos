@@ -2,6 +2,11 @@
 CC = gcc
 VERSION = 1000
 PROG = kernel-${VERSION}
+KASMSRCS = ${wildcard kernel/boot/idt/handlers/*.asm} \
+	 	   ${wildcard kernel/boot/idt/*.asm} \
+		   ${wildcard kernel/boot/ports/*.asm} \
+		   ${wildcard kernel/boot/*.asm}
+KASMOBJS = ${KASMSRCS:.asm=.o}
 KSRCS = ${wildcard kernel/kernel/driver/keyboard/*.c} \
 	    ${wildcard kernel/kernel/idt/*.c} \
 		${wildcard kernel/kernel/libc/stdlib/*.c} \
@@ -17,14 +22,14 @@ CFLAGS  = -ffreestanding -O2 -DMODULE -D__KERNEL__ -nostdinc ${WARN}
 
 all: ${PROG}
 
-boot.o:
-	nasm -f elf32 boot.asm -o boot.o
+%.o: %.asm
+	nasm -f elf32 -o $@ $^
 	
 %.o: %.c
 	gcc -m32 -Ikernel/include ${CFLAGS} -c -o $@ $^
 
-${PROG}: boot.o ${KOBJS} ${LIBCOBJS}
-	ld -m elf_i386 -T link.ld -o ${PROG} boot.o ${KOBJS} ${LIBCOBJS}
+${PROG}: ${KASMOBJS} ${KOBJS} ${LIBCOBJS}
+	ld -m elf_i386 -T link.ld -o ${PROG} ${KASMOBJS} ${KOBJS} ${LIBCOBJS}
 
 boot.iso: ${PROG}
 	mkdir -p iso/boot/grub
@@ -42,6 +47,7 @@ runiso: boot.iso
 
 .PHONY: clean
 clean:
-	rm -f ${KOBJS}
+	rm -f ${KASMOBJS} ${KOBJS}
 	rm -f *.o
 	rm -f ${PROG}
+	rm -f boot.iso
