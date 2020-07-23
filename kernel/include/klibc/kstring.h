@@ -1,7 +1,7 @@
 #ifndef _KERNEL_KSTRING_H
 #define _KERNEL_KSTRING_H 1
 
-#include <stddef.h>
+#include <klibc/kstddef.h>
 
 #ifdef __cplusplus
 extern "C" {

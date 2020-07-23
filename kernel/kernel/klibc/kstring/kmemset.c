@@ -1,4 +1,4 @@
-#include <kstring.h>
+#include <klibc/kstring.h>
 
 void* kmemset(void* bufptr, int value, size_t size) {
 	unsigned char* buf = (unsigned char*) bufptr;

@@ -1,4 +1,4 @@
-#include <kstring.h>
+#include <klibc/kstring.h>
 
 void* kmemcpy(void* restrict dstptr, const void* restrict srcptr, size_t size) {
 	unsigned char* dst = (unsigned char*) dstptr;

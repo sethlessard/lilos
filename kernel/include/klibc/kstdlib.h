@@ -8,6 +8,6 @@
  * @param str the character buffer to store the null-terminated string.
  * @param base the base of the integer, between 2 and 36.
  */
-char* itoa(int value, char *str, int base);
+char* kitoa(int value, char *str, int base);
 
 #endif

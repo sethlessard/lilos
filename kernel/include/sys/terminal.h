@@ -1,10 +1,6 @@
 #ifndef _KERNEL_TERMINAL_H
 #define _KERNEL_TERMINAL_H
 
-#include <stddef.h>
-
-#define EOF -1
-
 /**
  * Clear the screen.
  */
@@ -28,7 +24,7 @@ int Terminal_printf(const char* restrict format, ...);
  * @param c the character to print.
  * @returns -1 if EOF (c == \0). 
  */
-int Terminal_putChar(const char c);
+int Terminal_putc(const char c);
 
 /**
  * Put a string to the terminal.

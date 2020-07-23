@@ -1,6 +1,7 @@
 #include <idt.h>
 #include <kernel.h>
-#include <keyboard.h>
+
+#include <driver/keyboard.h>
 
 #define IDT_SIZE 256
 #define INTERRUPT_GATE 0x8e

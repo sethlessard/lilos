@@ -1,4 +1,4 @@
-#include <kstring.h>
+#include <klibc/kstring.h>
 
 int kmemcmp(const void* aptr, const void* bptr, size_t size) {
 	const unsigned char* a = (const unsigned char*) aptr;

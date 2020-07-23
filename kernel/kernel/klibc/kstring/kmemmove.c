@@ -1,4 +1,4 @@
-#include <kstring.h>
+#include <klibc/kstring.h>
 
 void* kmemmove(void* dstptr, const void* srcptr, size_t size) {
 	unsigned char* dst = (unsigned char*) dstptr;

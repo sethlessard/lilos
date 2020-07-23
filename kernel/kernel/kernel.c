@@ -1,17 +1,21 @@
 #include <kernel.h>
-#include <keyboard.h>
 #include <idt.h>
+
+#include <driver/keyboard.h>
+
 #include <sys/terminal.h>
 
 typedef multiboot_memory_map_t mmap_entry_t;
 
 void kernelMain(multiboot_info_t *mbd, unsigned int magic)
 {
+	// initialize the screen
+	Terminal_clear();
+	Terminal_printf("%d", 33);
+
 	// verify the multiboot flag
 	if ((mbd->flags & 1) == 0)
 	{
-		Terminal_clear();
-		Terminal_resetCursor();
 		Terminal_printf("Error. Expecting the first bit of the multiboot flag to be set.\n");
 		while (1)
 			;
@@ -54,7 +58,6 @@ void kernelMain(multiboot_info_t *mbd, unsigned int magic)
 
 	// initialize the terminal
 	Terminal_clear();
-	Terminal_resetCursor();
 	Terminal_printf("Free bytes: %d\n", freeMemoryBytes);
 	Terminal_printf("Reserved Bytes: %d\n", reservedMemoryBytes);
 	Terminal_printf("Bad Bytes: %d\n", badBytes);

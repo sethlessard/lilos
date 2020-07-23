@@ -1,5 +1,6 @@
-#include <keyboard.h>
-#include <keyboardmap.h>
+#include <driver/keyboard.h>
+#include <driver/keyboardmap.h>
+
 #include <sys/terminal.h>
 
 #define KEYBOARD_DATA_PORT 0x60
@@ -32,13 +33,13 @@ void Keyboard_handleKeypress(void)
         {
             // TODO: instead of printing straight to the screen, add support for
             // subscribing to keyboard events.
-            Terminal_putChar('\n');
+            Terminal_putc('\n');
             return;
         }
 
         // TODO: instead of printing straight to the screen, add support for
         // subscribing to keyboard events.
-        Terminal_putChar(keyboardmap[(unsigned char)keycode]);
+        Terminal_putc(keyboardmap[(unsigned char)keycode]);
     }
 }
 

@@ -1,5 +1,5 @@
-#include <stdbool.h>
-#include <stdlib.h>
+#include <klibc/kstdbool.h>
+#include <klibc/kstdlib.h>
 
 void _reverse(char* str, int length);
 void _swap(char* str1, char* str2);
@@ -32,7 +32,7 @@ void _swap(char* str1, char* str2) {
  * @param str the character buffer to store the null-terminated string.
  * @param base the base of the integer, between 2 and 36.
  */
-char* itoa(int value, char *str, int base) {
+char* kitoa(int value, char *str, int base) {
     int i = 0;
     bool isNeg = false;
 

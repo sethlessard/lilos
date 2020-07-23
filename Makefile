@@ -8,9 +8,11 @@ KASMSRCS = ${wildcard kernel/boot/idt/handlers/*.asm} \
 		   ${wildcard kernel/boot/*.asm}
 KASMOBJS = ${KASMSRCS:.asm=.o}
 KSRCS = ${wildcard kernel/kernel/driver/keyboard/*.c} \
+		${wildcard kernel/kernel/driver/screen/*.c} \
 	    ${wildcard kernel/kernel/idt/*.c} \
-		${wildcard kernel/kernel/libc/stdlib/*.c} \
-		${wildcard kernel/kernel/libc/string/*.c } \
+		${wildcard kernel/kernel/klibc/kstdio/*.c} \
+		${wildcard kernel/kernel/klibc/kstdlib/*.c} \
+		${wildcard kernel/kernel/klibc/kstring/*.c } \
 		${wildcard kernel/kernel/terminal/*.c} \
 	    ${wildcard kernel/kernel/*.c }
 KOBJS = ${KSRCS:.c=.o}
