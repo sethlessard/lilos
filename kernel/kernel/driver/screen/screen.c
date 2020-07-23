@@ -92,7 +92,7 @@ int Screen_putcc(const char c, const char backgroundCode, const char foregroundC
     default:
         // print the character
         videoMemory[cursorLocation++] = c;
-        videoMemory[cursorLocation++] = 0x07;
+        videoMemory[cursorLocation++] = colorCode;
         ++cursorX;
     }
     return 1;
