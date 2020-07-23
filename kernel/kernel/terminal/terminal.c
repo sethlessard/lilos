@@ -43,7 +43,7 @@ int Terminal_printf(const char *restrict format, ...)
 {
 	va_list parameters;
 	va_start(parameters, format);
-	int bytesWritten = kprintf(format, parameters);
+	int bytesWritten = kvprintf(format, parameters);
 	va_end(parameters);
 	return bytesWritten;
 }
