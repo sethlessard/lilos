@@ -81,6 +81,10 @@ void Terminal_putStr(const char *str)
 }
 
 void _writeBam(void)
-{
-	kprintf(BAM);
+{	
+	unsigned int i = 0;
+	char c;
+	while ((c = BAM[i++]) != 0) {
+		kputcc(c, COLOR_BLACK, COLOR_GREEN);
+	}
 }
