@@ -2,16 +2,24 @@
 #include <idt.h>
 
 #include <driver/keyboard.h>
+#include <driver/serial.h>
 
 #include <sys/terminal.h>
 
 typedef multiboot_memory_map_t mmap_entry_t;
 
-void kernelMain(multiboot_info_t *mbd, unsigned int magic)
-{
+unsigned int freeMemoryBytes = 0;
+unsigned int reservedMemoryBytes = 0;
+unsigned int badBytes = 0;
+
+void kernel_init(multiboot_info_t *mbd, unsigned int _) {
+	// initialize the IDT
+	Idt_init();
+	// TODO: initialize the GDT
+	// TODO: initialize the LDT
+
 	// initialize the screen
 	Terminal_clear();
-	Terminal_printf("%d", 33);
 
 	// verify the multiboot flag
 	if ((mbd->flags & 1) == 0)
@@ -22,9 +30,6 @@ void kernelMain(multiboot_info_t *mbd, unsigned int magic)
 	}
 
 	// TODO: outsource memory management 
-	unsigned int freeMemoryBytes = 0;
-	unsigned int reservedMemoryBytes = 0;
-	unsigned int badBytes = 0;
 	mmap_entry_t *entry = mbd->mmap_addr;
 	while (entry < mbd->mmap_addr + mbd->mmap_length)
 	{
@@ -49,11 +54,12 @@ void kernelMain(multiboot_info_t *mbd, unsigned int magic)
 		// get the next entry
 		entry = (mmap_entry_t *)((unsigned int)entry + entry->size + sizeof(entry->size));
 	}
+}
 
-	// initialize the IDT
-	Idt_init();
-
+void kernel_main(void)
+{
 	// initialize the drivers
+	Serial_init();
 	Keyboard_init();
 
 	// initialize the terminal

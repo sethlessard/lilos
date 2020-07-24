@@ -9,14 +9,16 @@ section .text
 
 global start
 
-extern kernelMain
+extern kernel_init
+extern kernel_main
 
 start:
     cli                          ; block interrupts
     mov esp, stack               ; set stack pointer
-    push eax                     ; push the magic number to the stack to be read by kernelMain
-    push ebx                     ; push the address of the grub multiboot object to the stack to be read by kernelMain
-    call kernelMain
+    push eax                     ; push the magic number to the stack to be read by kernel_init
+    push ebx                     ; push the address of the grub multiboot object to the stack to be read by kernel_init
+    call kernel_init             ; call kernel_init
+    call kernel_main             ; call kernel_main
     hlt                          ; halt the CPU
 
 section .bss

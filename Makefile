@@ -9,6 +9,7 @@ KASMSRCS = ${wildcard kernel/boot/idt/handlers/*.asm} \
 KASMOBJS = ${KASMSRCS:.asm=.o}
 KSRCS = ${wildcard kernel/kernel/driver/keyboard/*.c} \
 		${wildcard kernel/kernel/driver/screen/*.c} \
+		${wildcard kernel/kernel/driver/serial/*.c} \
 	    ${wildcard kernel/kernel/idt/*.c} \
 		${wildcard kernel/kernel/klibc/kstdio/*.c} \
 		${wildcard kernel/kernel/klibc/kstdlib/*.c} \

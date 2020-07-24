@@ -42,9 +42,11 @@ void Terminal_init(void)
 int Terminal_printf(const char *restrict format, ...)
 {
 	va_list parameters;
+
 	va_start(parameters, format);
 	int bytesWritten = kvprintf(format, parameters);
 	va_end(parameters);
+	
 	return bytesWritten;
 }
 

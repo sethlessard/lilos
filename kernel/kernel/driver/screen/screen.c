@@ -7,6 +7,14 @@ unsigned int cursorY = 0;
 unsigned int cursorLocation = 0;
 char *videoMemory = (char *)0xb8000;
 
+unsigned int getCursorCharLocation(unsigned int x, unsigned int y) {
+    // x * (y + 1)
+}
+
+unsigned int getCursorColorLocation(unsigned int x, unsigned int y) {
+    
+}
+
 /**
  * Clear the screen.
  */

@@ -6,6 +6,7 @@
 #define KEYBOARD_DATA_PORT 0x60
 #define KEYBOARD_STATUS_PORT 0x64
 #define ENTER_KEY_CODE 0x1C
+#define BACKSPACE_KEY_CODE 0xE
 
 extern char inb(unsigned short port);
 extern void outb(unsigned short port, unsigned char data);
@@ -37,9 +38,15 @@ void Keyboard_handleKeypress(void)
             return;
         }
 
+        if (keycode == BACKSPACE_KEY_CODE) {
+            Terminal_putc('\b');
+            return;
+        }
+
         // TODO: instead of printing straight to the screen, add support for
         // subscribing to keyboard events.
         Terminal_putc(keyboardmap[(unsigned char)keycode]);
+        // Terminal_printf("%d\n", (unsigned char)keycode);
     }
 }
 

@@ -7,8 +7,13 @@
 #define __is_libk
 
 /**
- * Main
+ * Init.
  */
-void kernelMain(multiboot_info_t* mbd, unsigned int magic);
+void kernel_init(multiboot_info_t* mbd, unsigned int magic);
+
+/**
+ * Main.
+ */ 
+void kernel_main(void);
 
 #endif
