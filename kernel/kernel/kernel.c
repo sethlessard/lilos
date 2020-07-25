@@ -1,4 +1,5 @@
 #include <kernel.h>
+#include <gdt.h>
 #include <idt.h>
 
 #include <driver/keyboard.h>
@@ -21,10 +22,11 @@ unsigned int reservedMemoryBytes = 0;
 unsigned int badBytes = 0;
 
 void kernel_init(multiboot_info_t *mbd, unsigned int _) {
+	// initialize the GDT
+	GDT_init();
+	
 	// initialize the IDT
 	Idt_init();
-	// TODO: initialize the GDT
-	// TODO: initialize the LDT
 
 	// initialize the screen
 	Terminal_clear();

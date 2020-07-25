@@ -2,7 +2,8 @@
 CC = gcc
 VERSION = 1000
 PROG = kernel-${VERSION}
-KASMSRCS = ${wildcard kernel/boot/idt/handlers/*.asm} \
+KASMSRCS = ${wildcard kernel/boot/gdt/*.asm} \
+		   ${wildcard kernel/boot/idt/handlers/*.asm} \
 	 	   ${wildcard kernel/boot/idt/*.asm} \
 		   ${wildcard kernel/boot/ports/*.asm} \
 		   ${wildcard kernel/boot/*.asm}
@@ -10,6 +11,7 @@ KASMOBJS = ${KASMSRCS:.asm=.o}
 KSRCS = ${wildcard kernel/kernel/driver/keyboard/*.c} \
 		${wildcard kernel/kernel/driver/screen/*.c} \
 		${wildcard kernel/kernel/driver/serial/*.c} \
+		${wildcard kernel/kernel/gdt/*.c} \
 	    ${wildcard kernel/kernel/idt/*.c} \
 		${wildcard kernel/kernel/klibc/kstdio/*.c} \
 		${wildcard kernel/kernel/klibc/kstdlib/*.c} \
