@@ -2,9 +2,11 @@
 
 # build the kernel
 make
-make boot.iso
 
 # build libc
 pushd libc
 make
 popd
+
+# build the iso
+make boot.iso

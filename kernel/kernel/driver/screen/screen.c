@@ -3,7 +3,7 @@
 #include <klibc/kstddef.h>
 #include <klibc/kstdint.h>
 
-#define VIDEO_MEM 0xb8000
+#define VIDEO_MEM 0xC00b8000
 
 extern char inb(unsigned short port);
 extern void outb(unsigned short port, unsigned char data);
