@@ -23,7 +23,7 @@ char Serial_read(unsigned short port);
  * Write a value to a serial port.
  * @param port the serial port.
  * @param c the 
- */ 
-char Serial_write(unsigned short port, const char c);
+ */
+void Serial_write(unsigned short port, const char c);
 
 #endif

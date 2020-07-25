@@ -31,7 +31,7 @@ char Serial_read(unsigned short port) {
  * @param port the serial port.
  * @param c the value to write.
  */ 
-char Serial_write(unsigned short port, const char c) {
+void Serial_write(unsigned short port, const char c) {
    while (_isTransmitEmpty(port) == 0);
    outb(port, c);
 }

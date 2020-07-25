@@ -2,17 +2,33 @@
 
 #include <klibc/kstddef.h>
 
+unsigned int getCursorCharLocation(unsigned int x, unsigned int y);
+unsigned int getCursorColorLocation(unsigned int x, unsigned int y);
+
 unsigned int cursorX = 0;
 unsigned int cursorY = 0;
 unsigned int cursorLocation = 0;
 char *videoMemory = (char *)0xb8000;
 
+/**
+ * Get the cursor's character memory location for a given point.
+ * @param x the x value.
+ * @param y the y value.
+ * @returns the cursor's character memory location.
+ */ 
 unsigned int getCursorCharLocation(unsigned int x, unsigned int y) {
-    // x * (y + 1)
+    // TODO: implement
+    return 1;
 }
 
+/**
+ * Get the cursor's color code memory location for a given point.
+ * @param x the x value.
+ * @param y the y value.
+ * @returns the cursor's color code memory location.
+ */ 
 unsigned int getCursorColorLocation(unsigned int x, unsigned int y) {
-    
+    return 1;
 }
 
 /**
