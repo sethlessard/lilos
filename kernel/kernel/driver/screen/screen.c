@@ -18,6 +18,8 @@ unsigned int cursorY = 0;
 unsigned int cursorLocation = 0;
 char *videoMemory = (char *)VIDEO_MEM;
 
+// TODO: add a generic write(char* data);
+
 /**
  * Clear the screen.
  */
