@@ -2,26 +2,32 @@
 CC = gcc
 VERSION = 1000
 PROG = kernel-${VERSION}
-KASMSRCS = ${wildcard kernel/boot/idt/handlers/*.asm} \
-	 	   ${wildcard kernel/boot/idt/*.asm} \
-		   ${wildcard kernel/boot/ports/*.asm} \
-		   ${wildcard kernel/boot/*.asm}
-KASMOBJS = ${KASMSRCS:.asm=.o}
-KSRCS = ${wildcard kernel/kernel/driver/keyboard/*.c} \
-		${wildcard kernel/kernel/driver/screen/*.c} \
-		${wildcard kernel/kernel/driver/serial/*.c} \
-	    ${wildcard kernel/kernel/idt/*.c} \
-		${wildcard kernel/kernel/klibc/kstdio/*.c} \
-		${wildcard kernel/kernel/klibc/kstdlib/*.c} \
-		${wildcard kernel/kernel/klibc/kstring/*.c } \
-		${wildcard kernel/kernel/terminal/*.c} \
-	    ${wildcard kernel/kernel/*.c }
-KOBJS = ${KSRCS:.c=.o}
-LIBCOBJS = ${wildcard libc/stdio/*.o} \
-		   ${wildcard libc/stdlib/*.o} \
-		   ${wildcard libc/string/*.o}
+
+KASMSRCS = 	${wildcard kernel/boot/idt/handlers/*.asm} \
+	 	   	${wildcard kernel/boot/idt/*.asm} \
+		   	${wildcard kernel/boot/ports/*.asm} \
+		   	${wildcard kernel/boot/*.asm}
+
+KASMOBJS = 	${KASMSRCS:.asm=.o}
+
+KSRCS =    	${wildcard kernel/kernel/driver/keyboard/*.c} \
+		   	${wildcard kernel/kernel/driver/screen/*.c} \
+			${wildcard kernel/kernel/driver/serial/*.c} \
+	    	${wildcard kernel/kernel/idt/*.c} \
+			${wildcard kernel/kernel/klibc/kstdio/*.c} \
+			${wildcard kernel/kernel/klibc/kstdlib/*.c} \
+			${wildcard kernel/kernel/klibc/kstring/*.c } \
+			${wildcard kernel/kernel/terminal/*.c} \
+	    	${wildcard kernel/kernel/*.c }
+
+KOBJS = 	${KSRCS:.c=.o}
+
+LIBCOBJS = 	${wildcard libc/stdio/*.o} \
+		   	${wildcard libc/stdlib/*.o} \
+		   	${wildcard libc/string/*.o}
+
 WARN    = -W -Wall -Wstrict-prototypes -Wmissing-prototypes
-CFLAGS  = -ffreestanding -O2 -DMODULE -D__KERNEL__ -nostdinc ${WARN}
+CFLAGS  = -nostdlib -nostdinc -fno-builtin -fno-stack-protector -nostartfiles -nodefaultlibs -ffreestanding -O2 -DMODULE -D__KERNEL__ -nostdinc ${WARN}
 
 all: ${PROG}
 
