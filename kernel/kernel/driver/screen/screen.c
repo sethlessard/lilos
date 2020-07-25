@@ -8,43 +8,15 @@
 extern char inb(unsigned short port);
 extern void outb(unsigned short port, unsigned char data);
 
-unsigned int getCursorCharLocation(unsigned int x, unsigned int y);
-unsigned int getCursorColorLocation(unsigned int x, unsigned int y);
+void _enableCursor(uint8_t topScanLine, uint8_t bottomScanLine);
+unsigned int _getCursorCharLocation(unsigned int x, unsigned int y);
+unsigned int _getCursorColorLocation(unsigned int x, unsigned int y);
+void _updateCursor(unsigned int x, unsigned int y);
 
 unsigned int cursorX = 0;
 unsigned int cursorY = 0;
 unsigned int cursorLocation = 0;
 char *videoMemory = (char *)VIDEO_MEM;
-
-/**
- * Get the cursor's character memory location for a given point.
- * 
- * Each screen character is represented by a two byte chunk of memory:
- * 
- *      15  14  13  12  11  10  9   8   7   6   5   4   3   2   1   0
- *      |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
- *      v   v   v   v   v   v   v   v   v   v   v   v   v   v   v   v
- *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- *      | Character Code            | BG Color Code | FG Color Code |
- *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
- * 
- * @param x the x value.
- * @param y the y value.
- * @returns the cursor's character memory location (bits 15-8).
- */ 
-unsigned int getCursorCharLocation(unsigned int x, unsigned int y) {
-    return x * 2 + (y * BYTES_PER_LINE);
-}
-
-/**
- * Get the cursor's color code memory location for a given point.
- * @param x the x value.
- * @param y the y value.
- * @returns the cursor's color code memory location (bits 7-0).
- */ 
-unsigned int getCursorColorLocation(unsigned int x, unsigned int y) {
-    return getCursorCharLocation(x, y) + 1;
-}
 
 /**
  * Clear the screen.
@@ -125,8 +97,8 @@ int Screen_putcc(const char c, const char backgroundCode, const char foregroundC
     {
     // backspace
     case '\b':
-        videoMemory[getCursorColorLocation(cursorX, cursorY)] = 0x07;
-        videoMemory[getCursorCharLocation(cursorX, cursorY)] = ' ';
+        videoMemory[_getCursorCharLocation(cursorX, cursorY)] = ' ';
+        videoMemory[_getCursorColorLocation(cursorX, cursorY)] = 0x07;
 
         // if we've backspaced all the way to the left, decrement cursorY
         if ((--cursorX % (VGA_WIDTH - 1)) == 0)
@@ -144,8 +116,8 @@ int Screen_putcc(const char c, const char backgroundCode, const char foregroundC
     case 0:
         return EOF;
     default:
-        videoMemory[getCursorCharLocation(cursorX, cursorY)] = c;
-        videoMemory[getCursorColorLocation(cursorX, cursorY)] = colorCode;
+        videoMemory[_getCursorCharLocation(cursorX, cursorY)] = c;
+        videoMemory[_getCursorColorLocation(cursorX, cursorY)] = colorCode;
         // print the character 
         if ((++cursorX % (VGA_WIDTH)) == 0) {
             ++cursorY;
@@ -188,6 +160,36 @@ void _enableCursor(uint8_t topScanLine, uint8_t bottomScanLine) {
  
 	outb(0x3D4, 0x0B);
 	outb(0x3D5, (inb(0x3D5) & 0xE0) | bottomScanLine);
+}
+
+/**
+ * Get the cursor's character memory location for a given point.
+ * 
+ * Each screen character is represented by a two byte chunk of memory:
+ * 
+ *      15  14  13  12  11  10  9   8   7   6   5   4   3   2   1   0
+ *      |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+ *      v   v   v   v   v   v   v   v   v   v   v   v   v   v   v   v
+ *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ *      | Character Code            | BG Color Code | FG Color Code |
+ *      +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
+ * 
+ * @param x the x value.
+ * @param y the y value.
+ * @returns the cursor's character memory location (bits 15-8).
+ */ 
+unsigned int _getCursorCharLocation(unsigned int x, unsigned int y) {
+    return x * 2 + (y * BYTES_PER_LINE);
+}
+
+/**
+ * Get the cursor's color code memory location for a given point.
+ * @param x the x value.
+ * @param y the y value.
+ * @returns the cursor's color code memory location (bits 7-0).
+ */ 
+unsigned int _getCursorColorLocation(unsigned int x, unsigned int y) {
+    return _getCursorCharLocation(x, y) + 1;
 }
 
 /**
