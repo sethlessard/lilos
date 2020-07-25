@@ -43,8 +43,7 @@ void Keyboard_handleKeypress(void)
             return;
         }
 
-        // TODO: instead of printing straight to the screen, add support for
-        // subscribing to keyboard events.
+        // TODO: print to the current file pointer location
         Terminal_putc(keyboardmap[(unsigned char)keycode]);
         // Terminal_printf("%d\n", (unsigned char)keycode);
     }

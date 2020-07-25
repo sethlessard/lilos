@@ -5,6 +5,11 @@
 
 #define EOF (-1)
 
+// file pointers
+#define stdout      1
+#define stderr      2
+#define stdin       3
+
 #ifdef __cplusplus
 extern "C" {
 #endif
