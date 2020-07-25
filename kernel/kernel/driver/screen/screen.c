@@ -108,7 +108,7 @@ int Screen_putcc(const char c, const char backgroundCode, const char foregroundC
             cursorX = VGA_WIDTH - 1;
             videoMemory[_getCursorCharLocation(0, cursorY + 1)] = ' ';
             videoMemory[_getCursorColorLocation(0, cursorY + 1)] = 0x07;
-            return;
+            return 1;
         }
 
         videoMemory[_getCursorCharLocation(cursorX, cursorY)] = ' ';
