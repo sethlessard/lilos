@@ -2,9 +2,17 @@
 #include <idt.h>
 
 #include <driver/keyboard.h>
+#include <driver/screen.h>
 #include <driver/serial.h>
 
 #include <sys/terminal.h>
+
+const char* BOOT_TEXT = ".__  .__.__                  \n" \
+						"|  | |__|  |     ____  ______\n" \
+						"|  | |  |  |    /  _ \\/  ___/\n" \
+						"|  |_|  |  |__ (  <_> )___ \\ \n" \
+						"|____/__|____/  \\____/____  >\n" \
+						"                          \\/ \n";
 
 typedef multiboot_memory_map_t mmap_entry_t;
 
@@ -58,12 +66,14 @@ void kernel_init(multiboot_info_t *mbd, unsigned int _) {
 
 void kernel_main(void)
 {
-	// initialize the drivers
+	// initialize the driversd
+	Screen_init();
 	Serial_init();
 	Keyboard_init();
 
 	// initialize the terminal
 	Terminal_clear();
+	Terminal_putstrc(BOOT_TEXT, COLOR_BLACK, COLOR_LIGHT_BLUE);
 	Terminal_printf("Free bytes: %d\n", freeMemoryBytes);
 	Terminal_printf("Reserved Bytes: %d\n", reservedMemoryBytes);
 	Terminal_printf("Bad Bytes: %d\n", badBytes);
