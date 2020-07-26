@@ -6,6 +6,8 @@
 #include <driver/screen.h>
 #include <driver/serial.h>
 
+#include <klibc/kstdio.h>
+
 #include <sys/terminal.h>
 
 const char *BOOT_TEXT = ".__  .__.__                  \n"
@@ -21,8 +23,12 @@ unsigned int freeMemoryBytes = 0;
 unsigned int reservedMemoryBytes = 0;
 unsigned int badBytes = 0;
 
-void kernel_init(multiboot_info_t *mbd, unsigned int _)
+void kernel_init(multiboot_info_t *mbd, unsigned int magic)
 {
+	if (magic) {
+		// TODO: verify magic
+	}
+
 	// initialize the GDT
 	GDT_init();
 
@@ -69,7 +75,7 @@ void kernel_init(multiboot_info_t *mbd, unsigned int _)
 
 void kernel_main(void)
 {
-	// initialize the driversd
+	// initialize the drivers
 	Screen_init();
 	Serial_init();
 	Keyboard_init();

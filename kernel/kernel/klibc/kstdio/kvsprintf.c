@@ -37,7 +37,6 @@ int kvsprintf(char* buf, const char* restrict format, va_list args) {
 				// TODO: Set errno to EOVERFLOW.
 				return -1;
 			}
-            // TODO: add format to buffer
             kmemcpy(buf + written, format, amount);
 			format += amount;
 			written += amount;
@@ -55,7 +54,6 @@ int kvsprintf(char* buf, const char* restrict format, va_list args) {
 				// TODO: Set errno to EOVERFLOW.
 				return -1;
 			}
-            // TODO: add c to buffer.
             kmemcpy(buf + written, &c, sizeof(c));
 			written++;
 		}
@@ -69,7 +67,6 @@ int kvsprintf(char* buf, const char* restrict format, va_list args) {
 				// TODO: Set errno to EOVERFLOW.
 				return -1;
 			}
-            // TODO: add str to buffer.
             kmemcpy(buf + written, str, len);
 			written += len;
 		}
@@ -77,23 +74,22 @@ int kvsprintf(char* buf, const char* restrict format, va_list args) {
 		{
 			format++;
 			int i = va_arg(va, int);
-			char buf[16];
-			char *formatted = kitoa(i, buf, 10);
-			size_t len = kstrlen(formatted);
-            // TODO: add formatted to buffer.
-            kmemcpy(buf + written, formatted, len);
+			char intBuf[16];
+			kitoa(i, intBuf, 10);
+			size_t len = kstrlen(intBuf);
+            kmemcpy(buf + written, intBuf, len);
 			written += len;
 		}
 		else if (*format == 'x')
 		{
 			format++;
 			int i = va_arg(va, int);
-			char buf[16];
-			char *formatted = kitoa(i, buf, 16);
-			size_t len = kstrlen(formatted);
-            // TODO: add formatted to buffer
-            kmemcpy(buf + written, formatted, len);
-			written += len;
+			char intBuf[16];
+			kitoa(i, intBuf, 16);
+			size_t len = kstrlen(intBuf);
+			kmemcpy(buf + written, "0x", 2);
+            kmemcpy(buf + written + 2, intBuf, len);
+			written += 2 + len;
 		}
 		else
 		{
@@ -104,7 +100,6 @@ int kvsprintf(char* buf, const char* restrict format, va_list args) {
 				// TODO: Set errno to EOVERFLOW.
 				return -1;
 			}
-            // TODO: add format to buffer
             kmemcpy(buf + written, format, len);
 			written += len;
 			format += len;
