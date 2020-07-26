@@ -2,7 +2,9 @@
 
 This is currently only a kernel.. working to be an OS.
 
-TODO: add required dependencies
+```bash
+sudo apt-get apt-get build-essential gcc make qemu-system
+```
 
 ### Build the operating system
 
