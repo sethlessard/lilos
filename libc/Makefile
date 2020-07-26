@@ -6,7 +6,7 @@ SRCS = ${wildcard stdio/*.c} \
 	   ${wildcard string/*.c}
 OBJS= ${SRCS:.c=.o}
 WARN    = -W -Wall -Wstrict-prototypes -Wmissing-prototypes
-CFLAGS  = -ffreestanding -O2 -DMODULE -D__KERNEL__ -nostdinc ${WARN}
+CFLAGS  = -O2 -nostdinc ${WARN}
 
 all: ${OBJS}
 	

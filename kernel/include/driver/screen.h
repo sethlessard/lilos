@@ -1,11 +1,12 @@
 #ifndef _KERNEL_SCREEN_H
 #define _KERNEL_SCREEN_H
 
-#define LINES 25
-#define COLUMNS_IN_LINE 80
-#define BYTES_PER_CHAR 2
-#define SCREEN_SIZE BYTES_PER_CHAR * COLUMNS_IN_LINE * LINES
-#define LINE_SIZE BYTES_PER_CHAR * COLUMNS_IN_LINE
+#define VGA_HEIGHT              25
+#define VGA_WIDTH               80
+
+#define BYTES_PER_CHAR          2
+#define SCREEN_SIZE             BYTES_PER_CHAR * VGA_WIDTH * VGA_HEIGHT
+#define BYTES_PER_LINE          BYTES_PER_CHAR * VGA_WIDTH
 
 #define COLOR_BLACK             0x0
 #define COLOR_BLUE              0x1
@@ -49,6 +50,11 @@ unsigned int Screen_getCursorX(void);
 unsigned int Screen_getCursorY(void);
 
 /**
+ * Initialize the screen.
+ */
+void Screen_init(void);
+
+/**
  * Put a character on the screen at the current location of the cursor.
  * @param c the character.
  * @returns EOF if the character passed was the null character, or 1 if successful.
@@ -72,5 +78,10 @@ int Screen_putcc(const char c, const char backgroundCode, const char foregroundC
  * @returns -1 if there was an error, or 1.
  */ 
 int Screen_setCursorLocation(int x, int y);
+
+/**
+ * Force the screen to update the hardware cursor location.
+ */ 
+void Screen_updateCursorLocation(void);
 
 #endif

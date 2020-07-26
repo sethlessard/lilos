@@ -1,8 +1,8 @@
 
-global load_idt
+global IDT_flush
 
 ; load the IDT from C kernel.
-load_idt:
+IDT_flush:
     mov edx, [esp + 4]
     lidt [edx]
     sti                          ; turn on interrupts

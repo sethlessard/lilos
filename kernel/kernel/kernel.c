@@ -1,10 +1,19 @@
 #include <kernel.h>
+#include <gdt.h>
 #include <idt.h>
 
 #include <driver/keyboard.h>
+#include <driver/screen.h>
 #include <driver/serial.h>
 
 #include <sys/terminal.h>
+
+const char *BOOT_TEXT = ".__  .__.__                  \n"
+						"|  | |__|  |     ____  ______\n"
+						"|  | |  |  |    /  _ \\/  ___/\n"
+						"|  |_|  |  |__ (  <_> )___ \\ \n"
+						"|____/__|____/  \\____/____  >\n"
+						"                          \\/ \n";
 
 typedef multiboot_memory_map_t mmap_entry_t;
 
@@ -12,11 +21,13 @@ unsigned int freeMemoryBytes = 0;
 unsigned int reservedMemoryBytes = 0;
 unsigned int badBytes = 0;
 
-void kernel_init(multiboot_info_t *mbd, unsigned int _) {
+void kernel_init(multiboot_info_t *mbd, unsigned int _)
+{
+	// initialize the GDT
+	GDT_init();
+
 	// initialize the IDT
-	Idt_init();
-	// TODO: initialize the GDT
-	// TODO: initialize the LDT
+	IDT_init();
 
 	// initialize the screen
 	Terminal_clear();
@@ -29,7 +40,7 @@ void kernel_init(multiboot_info_t *mbd, unsigned int _) {
 			;
 	}
 
-	// TODO: outsource memory management 
+	// TODO: outsource memory management
 	mmap_entry_t *entry = mbd->mmap_addr;
 	while (entry < mbd->mmap_addr + mbd->mmap_length)
 	{
@@ -58,18 +69,20 @@ void kernel_init(multiboot_info_t *mbd, unsigned int _) {
 
 void kernel_main(void)
 {
-	// initialize the drivers
+	// initialize the driversd
+	Screen_init();
 	Serial_init();
 	Keyboard_init();
 
 	// initialize the terminal
 	Terminal_clear();
+	Terminal_putstrc(BOOT_TEXT, COLOR_BLACK, COLOR_LIGHT_BLUE);
 	Terminal_printf("Free bytes: %d\n", freeMemoryBytes);
 	Terminal_printf("Reserved Bytes: %d\n", reservedMemoryBytes);
 	Terminal_printf("Bad Bytes: %d\n", badBytes);
 	Terminal_printf("\n");
 	Terminal_init();
-	
+
 	while (1)
 		;
 }

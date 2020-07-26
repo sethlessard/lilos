@@ -10,6 +10,8 @@
 #include <klibc/kstdlib.h>
 #include <klibc/kstring.h>
 
+// TODO: this should be a userland process, and not live in the kernel at all
+
 #define BAM "lilos > "
 #define BAM_LENGTH kstrlen(BAM)
 
@@ -55,6 +57,17 @@ int Terminal_printf(const char *restrict format, ...)
  */
 int Terminal_putc(const char c)
 {
+	return Terminal_putcc(c, COLOR_BLACK, COLOR_LIGHT_GRAY);
+}
+
+/**
+ * Put a character at the current video pointer location with a given background and foreground color.
+ * @param c the character.
+ * @param backgroundCode the background color code.
+ * @param foregroundCode the foregroundColor code.
+ * @returns -1 if EOF (c == \0)
+ */ 
+int Terminal_putcc(const char c, const char backgroundCode, const char foregroundCode) {
 	switch (c) {
 		case '\b':
 			if (lineLength == 0) return 1;
@@ -62,12 +75,12 @@ int Terminal_putc(const char c)
 			break;
 		case '\n':
 			lineLength = 0;
-			// TODO: execute line
-			// TODO: print bam
 			break;
 	}
-	if (kputc(c) != EOF) {
+	Screen_updateCursorLocation();
+	if (kputcc(c, backgroundCode, foregroundCode) != EOF) {
 		++lineLength;
+		Screen_updateCursorLocation();
 		return 1;
 	};
 	return EOF;
@@ -77,16 +90,28 @@ int Terminal_putc(const char c)
  * Put a string to the terminal.
  * @param str the string.
  */
-void Terminal_putStr(const char *str)
+void Terminal_putstr(const char *str)
 {
 	Terminal_printf("%s\n", str);
+	Screen_updateCursorLocation();
+}
+
+/**
+ * Put a string to the current video pointer location with a given foreground color and background color.
+ * @param str the string.
+ * @param backgroundCode the background color code.
+ * @param foregroundCode the foreground color code.
+ */ 
+void Terminal_putstrc(const char* str, const char backgroundCode, const char foregroundCode) {
+	unsigned int i = 0;
+	char c;
+	while ((c = str[i++]) != 0) {
+		kputcc(c, backgroundCode, foregroundCode);
+	}
+	Screen_updateCursorLocation();
 }
 
 void _writeBam(void)
 {	
-	unsigned int i = 0;
-	char c;
-	while ((c = BAM[i++]) != 0) {
-		kputcc(c, COLOR_BLACK, COLOR_GREEN);
-	}
+	Terminal_putstrc(BAM, COLOR_BLACK, COLOR_GREEN);
 }
