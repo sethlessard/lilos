@@ -10,6 +10,8 @@
 #include <klibc/kstdlib.h>
 #include <klibc/kstring.h>
 
+// TODO: this should be a userland process, and not live in the kernel at all
+
 #define BAM "lilos > "
 #define BAM_LENGTH kstrlen(BAM)
 
@@ -73,8 +75,6 @@ int Terminal_putcc(const char c, const char backgroundCode, const char foregroun
 			break;
 		case '\n':
 			lineLength = 0;
-			// TODO: execute line
-			// TODO: print bam
 			break;
 	}
 	Screen_updateCursorLocation();

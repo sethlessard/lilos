@@ -4,6 +4,6 @@
 /**
  * Initialize the IDT.
  */
-void Idt_init(void);
+void IDT_init(void);
 
 #endif

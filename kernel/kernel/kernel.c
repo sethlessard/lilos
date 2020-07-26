@@ -8,11 +8,11 @@
 
 #include <sys/terminal.h>
 
-const char* BOOT_TEXT = ".__  .__.__                  \n" \
-						"|  | |__|  |     ____  ______\n" \
-						"|  | |  |  |    /  _ \\/  ___/\n" \
-						"|  |_|  |  |__ (  <_> )___ \\ \n" \
-						"|____/__|____/  \\____/____  >\n" \
+const char *BOOT_TEXT = ".__  .__.__                  \n"
+						"|  | |__|  |     ____  ______\n"
+						"|  | |  |  |    /  _ \\/  ___/\n"
+						"|  |_|  |  |__ (  <_> )___ \\ \n"
+						"|____/__|____/  \\____/____  >\n"
 						"                          \\/ \n";
 
 typedef multiboot_memory_map_t mmap_entry_t;
@@ -21,12 +21,13 @@ unsigned int freeMemoryBytes = 0;
 unsigned int reservedMemoryBytes = 0;
 unsigned int badBytes = 0;
 
-void kernel_init(multiboot_info_t *mbd, unsigned int _) {
+void kernel_init(multiboot_info_t *mbd, unsigned int _)
+{
 	// initialize the GDT
 	GDT_init();
-	
+
 	// initialize the IDT
-	Idt_init();
+	IDT_init();
 
 	// initialize the screen
 	Terminal_clear();
@@ -39,7 +40,7 @@ void kernel_init(multiboot_info_t *mbd, unsigned int _) {
 			;
 	}
 
-	// TODO: outsource memory management 
+	// TODO: outsource memory management
 	mmap_entry_t *entry = mbd->mmap_addr;
 	while (entry < mbd->mmap_addr + mbd->mmap_length)
 	{
@@ -81,7 +82,7 @@ void kernel_main(void)
 	Terminal_printf("Bad Bytes: %d\n", badBytes);
 	Terminal_printf("\n");
 	Terminal_init();
-	
+
 	while (1)
 		;
 }
