@@ -143,7 +143,20 @@ int Screen_putcc(const char c, const char backgroundCode, const char foregroundC
  */
 int Screen_setCursorLocation(int x, int y)
 {
-    // TODO: validate x, y
+    if (x < 0 || y < 0) {
+        return -1;
+    }
+
+    // TODO: macros for screen height and width
+    if (x > 80) {
+        x = 0;
+        y++;
+    }
+
+    if (y > 25) {
+        y = 25; // TODO: scroll
+    }
+
     cursorX = x;
     cursorY = y;
     _updateCursor(cursorX, cursorY);
@@ -160,7 +173,7 @@ void Screen_updateCursorLocation(void)
 
 /**
  * Enable the hardware cursor.
- * @param 
+ * @param
  */
 void _enableCursor(uint8_t topScanLine, uint8_t bottomScanLine)
 {
