@@ -1,0 +1,36 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "shell",
+      "label": "make:debug",
+      "command": "make",
+      "args": ["debug"],
+      "dependsOn": ["make:clean"],
+      "isBackground": true,
+      "problemMatcher": {
+        "pattern": {
+          "regexp": "(.*) (warning|info|error): (.*)",
+          "file": 1,
+          "severity": 2,
+          "message": 3
+        },
+        "background": {
+          "activeOnStart": true,
+          "beginsPattern": {
+            "regexp": "nasm.*"
+          },
+          "endsPattern": {
+            "regexp": "qemu.*"
+          }
+        } 
+      }
+    },
+    {
+      "type": "shell",
+      "label": "make:clean",
+      "command": "make",
+      "args": ["clean"]
+    },
+  ]
+}

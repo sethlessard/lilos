@@ -1,5 +1,4 @@
 *.o
-.vscode
 *.iso
 kernel-*
 iso/*

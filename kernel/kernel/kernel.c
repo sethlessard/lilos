@@ -77,6 +77,7 @@ void kernel_main(void)
 	// initialize the terminal
 	Terminal_clear();
 	Terminal_putstrc(BOOT_TEXT, COLOR_BLACK, COLOR_LIGHT_BLUE);
+	Terminal_printf("Memory statistics:\n");
 	Terminal_printf("Free bytes: %d\n", freeMemoryBytes);
 	Terminal_printf("Reserved Bytes: %d\n", reservedMemoryBytes);
 	Terminal_printf("Bad Bytes: %d\n", badBytes);
