@@ -23,7 +23,7 @@ LIBCOBJS = ${wildcard libc/stdio/*.o} \
 		   ${wildcard libc/stdlib/*.o} \
 		   ${wildcard libc/string/*.o}
 WARN    = -W -Wall -Wstrict-prototypes -Wmissing-prototypes
-CFLAGS  = -ffreestanding -O2 -DMODULE -D__KERNEL__ -nostdinc ${WARN}
+CFLAGS  = -ffreestanding -O2 -DMODULE -D__KERNEL__ -nostdinc ${WARN} -ggdb
 
 all: ${PROG}
 
@@ -45,6 +45,10 @@ boot.iso: ${PROG}
 .PHONY: run
 run: ${PROG}
 	qemu-system-i386 -kernel ${PROG}
+
+.PHONY: debug
+debug: ${PROG}
+	qemu-system-i386 -S -s -kernel ${PROG}
 
 .PHONY: runiso
 runiso: boot.iso
