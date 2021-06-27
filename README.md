@@ -3,7 +3,7 @@
 This is currently only a kernel.. working to be an OS.
 
 ```bash
-sudo apt-get apt-get build-essential gcc make qemu-system
+sudo apt-get install -y build-essential gcc make qemu-system nasm xorriso
 ```
 
 ### Build the operating system
